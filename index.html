@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امروز با امیرعلی</title>
 
+<link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  width:360px;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+}
+
+button{
+  width:90%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,0.12);
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>🌤️ امروز با امیرعلی</h2>
+  <div id="app"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
+<script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+
+<script>
+let state = { step: 0 };
+
+function start(){
+  state = { step: 0 };
+
+  document.getElementById("app").innerHTML = `
+    <p>امروز می‌خوای بریم بیرون؟ 😎</p>
+    <button onclick="calendar()">بزن بریم</button>
+  `;
+}
+
+function calendar(){
+  state.step = 1;
+
+  document.getElementById("app").innerHTML = `
+    <p>📅 انتخاب تاریخ</p>
+    <input type="text" id="pdate"/>
+    <button onclick="saveDate()">تایید</button>
+  `;
+
+  $("#pdate").persianDatepicker({
+    format:'YYYY/MM/DD',
+    autoClose:true
+  });
+}
+
+function saveDate(){
+  state.date = document.getElementById("pdate").value;
+  state.step = 2;
+
+  document.getElementById("app").innerHTML = `
+    <p>🕒 انتخاب ساعت</p>
+    <input type="time" id="time"/>
+    <button onclick="saveTime()">ادامه</button>
+  `;
+}
+
+function saveTime(){
+  state.time = document.getElementById("time").value;
+  state.step = 3;
+
+  document.getElementById("app").innerHTML = `
+    <p>🎯 حالتت چیه؟</p>
+    <button onclick="result('آروم')">آروم 😌</button>
+    <button onclick="result('هیجانی')">هیجانی 🔥</button>
+    <button onclick="result('شکم')">شکم‌گردی 🍔</button>
+  `;
+}
+
+function result(m){
+
+  let options = {
+    "شکم": ["پیتزا 🍕","برگر 🍔","پاستا 🍝"],
+    "هیجانی": ["سینما 🎬","شهربازی 🎢"],
+    "آروم": ["پارک 🌿","کافه ☕","قدم زدن 🚶"]
+  };
+
+  let arr = options[m];
+  let pick = arr[Math.floor(Math.random() * arr.length)];
+
+  document.getElementById("app").innerHTML = `
+    <h3>🎯 نتیجه</h3>
+    <p>${pick}</p>
+    <p>${state.date  '-'} - ${state.time  '-'}</p>
+    <button onclick="start()">🔁 دوباره</button>
+  `;
+}
+
+start();
+</script>
+
+</body>
+</html>
