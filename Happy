@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امروز با امیرعلی</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  width:360px;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+}
+
+button{
+  width:90%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,0.12);
+  color:white;
+  cursor:pointer;
+}
+
+input{
+  width:85%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin:10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>🌤️ امروز با امیرعلی</h2>
+  <div id="app"></div>
+</div>
+
+<script>
+let state = {};
+
+function start(){
+  document.getElementById("app").innerHTML = `
+    <p>امروز می‌خوای بریم بیرون؟ 😎</p>
+    <button onclick="calendar()">بزن بریم</button>
+  `;
+}
+
+function calendar(){
+  document.getElementById("app").innerHTML = `
+    <p>📅 انتخاب تاریخ</p>
+    <input type="date" id="date"/>
+    <button onclick="saveDate()">تایید</button>
+  `;
+}
+
+function saveDate(){
+  let val = document.getElementById("date").value;
+  if(!val){ alert("تاریخ رو انتخاب کن"); return; }
+  state.date = val;
+
+  document.getElementById("app").innerHTML = `
+    <p>🕒 انتخاب ساعت</p>
+    <input type="time" id="time"/>
+    <button onclick="saveTime()">ادامه</button>
+  `;
+}
+
+function saveTime(){
+  let val = document.getElementById("time").value;
+  if(!val){ alert("ساعت رو انتخاب کن"); return; }
+  state.time = val;
+
+  document.getElementById("app").innerHTML = `
+    <p>🎯 حالتت چیه؟</p>
+    <button onclick="result('آروم')">آروم 😌</button>
+    <button onclick="result('هیجانی')">هیجانی 🔥</button>
+    <button onclick="result('شکم')">شکم‌گردی 🍔</button>
+  `;
+}
+
+function result(m){
+
+  let options = {
+    "شکم": ["پیتزا 🍕","برگر 🍔","پاستا 🍝"],
+    "هیجانی": ["سینما 🎬","شهربازی 🎢"],
+    "آروم": ["پارک 🌿","کافه ☕","قدم زدن 🚶"]
+  };
+
+  let arr = options[m];
+  let pick = arr[Math.floor(Math.random() * arr.length)];
+
+  document.getElementById("app").innerHTML = `
+    <h3>🎯 نتیجه</h3>
+    <p>بریم <b>${pick}</b> 😍</p>
+    <p>${state.date} - ${state.time}</p>
+    <button onclick="start()">🔁 دوباره</button>
+  `;
+}
+
+start();
+</script>
+
+</body>
+</html>
